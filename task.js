@@ -1,9 +1,6 @@
 let inputs = document.getElementById("task-input");
 const list = document.getElementById("task-list");
 const form = document.getElementById("task-form");
-const list2 = document.getElementById("task-list2");
-const form2 = document.getElementById("task-form2");
-let inputs2 = document.getElementById("task-input2");
 
 function postTask() {
   const listItem = document.createElement("li");
@@ -30,7 +27,13 @@ const finishTask = (e) => {
   e.target.remove();
   checkBox.remove();
 
-  list.appendChild(redactButt);
+  let redactButt = document.createElement("input");
+  redactButt.setAttribute("type", "submit");
+  redactButt.value = "Redact";
+  redactButt.classList.add("btnCheck");
+  redactButt.addEventListener("click", change);
+
+  listItem.appendChild(redactButt);
 };
 
 const generateBtnCheckbox = () => {
@@ -57,19 +60,27 @@ function displayText() {
   inputs.value = "new task";
 }
 
-let redactButt = document.createElement("input");
-redactButt.setAttribute("type", "submit");
-redactButt.value = "Redact";
-redactButt.classList.add("btnCheck");
+function save(element, value) {
+  element.innerText = value;
+}
 
-redactButt.addEventListener("click", change);
-
-function change() {
-  const inpLi = document.createElement("li");
-  textform = document.createElement("form");
-  textInp = document.getElementById("task-input2");
-  redactButt.remove();
-  inpLi.appendChild(textform);
-  list2.appendChild(inpLi);
-  textform.appendChild(textInp);
+function change(event) {
+  // event: {
+  //  target: Node
+  // }
+  // 1. Change Redact to save
+  // 2. Add input set value to task name
+  // 3. OnSave Change task to new task
+  const target = event.target;
+  const listItem = target.parentElement;
+  listItem.style.textDecoration = "none";
+  const input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.value = listItem.innerText;
+  listItem.innerText = '';
+  target.value = "Save";
+  listItem.appendChild(input);
+  listItem.appendChild(target);
+  target.removeEventListener("click", change);
+  target.addEventListener("click", () => save(listItem, input.value));
 }

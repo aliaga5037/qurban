@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .box {
+        border: 1px solid black;
+        height: 100px;
+        width: 100px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <input type="text" id="task-input" />
+      <input type="submit" value="save" />
+    </form>
+
+    <div class="container"></div>
+
+    <script>
+      const taskList = [{ name: "task", done: false }];
+      const form = document.querySelector("form");
+      const container = document.querySelector(".container");
+      const renderTasks = () => {
+        container.innerHTML = "";
+        taskList.forEach((task) => {
+          const div = document.createElement("div");
+          div.classList.add("box");
+          div.innerText = task.name;
+
+          container.appendChild(div);
+        });
+      };
+
+      const saveTask = (e) => {
+        e.preventDefault();
+        const task = document.getElementById("task-input");
+        const newTask = {
+          name: task.value,
+          done: false,
+        };
+
+        taskList.push(newTask);
+
+        renderTasks();
+      };
+
+      form.addEventListener("submit", saveTask);
+
+      renderTasks();
+    </script>
+  </body>
+</html>
